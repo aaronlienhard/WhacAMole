@@ -1,18 +1,7 @@
-## Getting Started
+## What is this project?
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A simple whack a mole game created by following [@Kenny Yip Coding's tutorial on YouTube](https://youtu.be/rIQksHTwZzA?si=9-2oUrJybdjCV-s7). I plan on completing the inital tutorial and then adding some extra features based on his ["homework" suggestions](https://github.com/ImKennyYip/whac-a-mole-java). 
 
-## Folder Structure
+## Why do this?
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+This is practice to get more comfortable with Java programming overall and move closer and closer to a level where I am able to find an entry level developer job.
