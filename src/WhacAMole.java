@@ -16,6 +16,15 @@ public class WhacAMole {
     ImageIcon moleIcon;
     ImageIcon plantIcon;
 
+    JButton currMoleTile;
+    JButton currPlantTile;
+
+    Random random = new Random();
+    Timer setMoleTimer;
+    Timer setPlantTimer;
+
+    int score = 0;
+
     WhacAMole() {
         // frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
@@ -49,10 +58,74 @@ public class WhacAMole {
             board[i] = tile;
             boardPanel.add(tile);
             tile.setFocusable(false); // hides the square around the image when clicked
-            // tile.setIcon(plantIcon);
-            // tile.setIcon(moleIcon);
+
+            tile.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JButton tile = (JButton) e.getSource();
+                    if (tile == currMoleTile) {
+                        score += 10;
+                        textLabel.setText("Score: " + Integer.toString(score));
+                    }
+                    else if (tile == currPlantTile) {
+                        textLabel.setText("Game Over: " + Integer.toString(score));
+
+                        // Stops the movement of the mole and plant
+                        setMoleTimer.stop();
+                        setPlantTimer.stop();
+
+                        // Iterates through each button of the array and disables it
+                        for (int i = 0; i < 9; i++) {
+                            board[i].setEnabled(false);
+                        }
+                    }
+                }
+            });
         }
 
+        setMoleTimer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Remove mole from current tile
+                if (currMoleTile != null) {
+                    currMoleTile.setIcon(null);
+                    currMoleTile = null;
+                }
+
+                // Randomly select another tile
+                int num = random.nextInt(9); // Gives random number up to 9 (0-8)
+                JButton tile = board[num]; // Select random tile from array
+
+                // If tile is occupied by plant, skip tile for this turn
+                if (currPlantTile == tile) return;
+
+                // Set tile to mole
+                currMoleTile = tile;
+                currMoleTile.setIcon(moleIcon);
+            }
+        });
+
+        setPlantTimer = new Timer(1500, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Remove plant from current tile
+                if (currPlantTile != null) {
+                    currPlantTile.setIcon(null);
+                    currPlantTile = null;
+                }
+
+                // Randomly select another tile
+                int num = random.nextInt(9); // Gives random number up to 9 (0-8)
+                JButton tile = board[num]; // Select random tile from array
+
+                // If tile is occupied by mole, skip tile for this turn
+                if (currMoleTile == tile) return;
+
+                // Set tile to plant
+                currPlantTile = tile;
+                currPlantTile.setIcon(plantIcon);
+            }
+        });
+
+        setMoleTimer.start();
+        setPlantTimer.start();
         frame.setVisible(true); // by setting at very end, everything loads before the window is visible
     }
 }
