@@ -7,10 +7,12 @@ public class WhacAMole {
     int boardWidth = 600;
     int boardHeight = 650; // 50px for the text panel on top
 
-    JFrame frame = new JFrame("Mario: Whac A Mole");
-    JLabel textLabel = new JLabel();
+    JFrame frame = new JFrame("Whac A Mole");
+    JLabel scoreLabel = new JLabel();
+    JLabel highscoreLabel = new JLabel();
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
+    JPanel resetPanel = new JPanel();
 
     JButton[] board = new JButton[9];
     ImageIcon moleIcon;
@@ -18,12 +20,14 @@ public class WhacAMole {
 
     JButton currMoleTile;
     JButton currPlantTile;
+    JButton resetButton = new JButton("Reset Game");
 
     Random random = new Random();
     Timer setMoleTimer;
     Timer setPlantTimer;
 
     int score = 0;
+    int highScore = 0;
 
     WhacAMole() {
         // frame.setVisible(true);
@@ -33,14 +37,35 @@ public class WhacAMole {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        textLabel.setFont(new Font("Times New Roman", Font.PLAIN, 50));
-        textLabel.setHorizontalAlignment(JLabel.CENTER);
-        textLabel.setText("Score: 0");
-        textLabel.setOpaque(true);
+        scoreLabel.setFont(new Font("Times New Roman", Font.PLAIN, 50));
+        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreLabel.setText("Score: 0");
+        scoreLabel.setOpaque(true);
 
-        textPanel.setLayout(new BorderLayout());
-        textPanel.add(textLabel);
+        highscoreLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+        highscoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        highscoreLabel.setText("High Score: 0");
+        highscoreLabel.setOpaque(true);
+
+        textPanel.setLayout(new GridLayout(0, 1));
+        textPanel.add(scoreLabel);
+        textPanel.add(highscoreLabel);
         frame.add(textPanel, BorderLayout.NORTH);
+
+        resetButton.setPreferredSize(new Dimension(60, 60));
+
+        resetPanel.setLayout(new BorderLayout());
+        resetPanel.add(resetButton);
+        frame.add(resetPanel, BorderLayout.SOUTH);
+
+        // resetButton.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         highScore = score;
+
+        //     }
+        // });
+
+        resetButton.setEnabled(false);
 
         boardPanel.setLayout(new GridLayout(3, 3));
         // boardPanel.setBackground(Color.black);
@@ -64,10 +89,13 @@ public class WhacAMole {
                     JButton tile = (JButton) e.getSource();
                     if (tile == currMoleTile) {
                         score += 10;
-                        textLabel.setText("Score: " + Integer.toString(score));
+                        scoreLabel.setText("Score: " + Integer.toString(score));
                     }
                     else if (tile == currPlantTile) {
-                        textLabel.setText("Game Over: " + Integer.toString(score));
+                        scoreLabel.setText("Game Over: " + Integer.toString(score));
+                        highscoreLabel.setText("High Score: " + Integer.toString(score));
+
+                        resetButton.setEnabled(true);
 
                         // Stops the movement of the mole and plant
                         setMoleTimer.stop();
