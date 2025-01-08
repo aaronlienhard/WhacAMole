@@ -58,12 +58,21 @@ public class WhacAMole {
         resetPanel.add(resetButton);
         frame.add(resetPanel, BorderLayout.SOUTH);
 
-        // resetButton.addActionListener(new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         highScore = score;
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                highScore = score;
+                score = 0;
+                scoreLabel.setText("Score: " + Integer.toString(score));
 
-        //     }
-        // });
+                for (int i = 0; i < 9; i++) {
+                    board[i].setEnabled(true);
+                }
+
+                setMoleTimer.start();
+                setPlantTimer.start();
+                resetButton.setEnabled(false);
+            }
+        });
 
         resetButton.setEnabled(false);
 
@@ -77,7 +86,7 @@ public class WhacAMole {
 
         Image moleImg = new ImageIcon(getClass().getResource("./monty.png")).getImage();
         moleIcon = new ImageIcon(moleImg.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
-
+        
         for (int i = 0; i < 9; i++) {
             JButton tile = new JButton();
             board[i] = tile;
@@ -93,7 +102,10 @@ public class WhacAMole {
                     }
                     else if (tile == currPlantTile) {
                         scoreLabel.setText("Game Over: " + Integer.toString(score));
-                        highscoreLabel.setText("High Score: " + Integer.toString(score));
+
+                        if (highScore <= score) {
+                            highscoreLabel.setText("High Score: " + Integer.toString(score));
+                        }
 
                         resetButton.setEnabled(true);
 
