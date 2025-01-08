@@ -16,15 +16,15 @@ public class WhacAMole {
 
     JButton[] board = new JButton[9];
     ImageIcon moleIcon;
-    ImageIcon plantIcon;
+    ImageIcon enemyIcon;
 
     JButton currMoleTile;
-    JButton currPlantTile;
+    JButton currEnemyTile;
     JButton resetButton = new JButton("Reset Game");
 
     Random random = new Random();
     Timer setMoleTimer;
-    Timer setPlantTimer;
+    Timer setEnemyTimer;
 
     int score = 0;
     int highScore = 0;
@@ -69,7 +69,7 @@ public class WhacAMole {
                 }
 
                 setMoleTimer.start();
-                setPlantTimer.start();
+                setEnemyTimer.start();
                 resetButton.setEnabled(false);
             }
         });
@@ -80,12 +80,12 @@ public class WhacAMole {
         // boardPanel.setBackground(Color.black);
         frame.add(boardPanel);
 
-        // plantIcon = new ImageIcon(getClass().getResource("./piranha.png"));
-        Image plantImg = new ImageIcon(getClass().getResource("./piranha.png")).getImage();
-        plantIcon = new ImageIcon(plantImg.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
+        // enemyIcon = new ImageIcon(getClass().getResource("./piranha.png"));
+        Image enemyImg = new ImageIcon(getClass().getResource("./blackFrost.png")).getImage();
+        enemyIcon = new ImageIcon(enemyImg.getScaledInstance(150, 140, java.awt.Image.SCALE_SMOOTH));
 
-        Image moleImg = new ImageIcon(getClass().getResource("./monty.png")).getImage();
-        moleIcon = new ImageIcon(moleImg.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
+        Image moleImg = new ImageIcon(getClass().getResource("./jackFrost.png")).getImage();
+        moleIcon = new ImageIcon(moleImg.getScaledInstance(175, 135, java.awt.Image.SCALE_SMOOTH));
         
         for (int i = 0; i < 9; i++) {
             JButton tile = new JButton();
@@ -100,7 +100,7 @@ public class WhacAMole {
                         score += 10;
                         scoreLabel.setText("Score: " + Integer.toString(score));
                     }
-                    else if (tile == currPlantTile) {
+                    else if (tile == currEnemyTile) {
                         scoreLabel.setText("Game Over: " + Integer.toString(score));
 
                         if (highScore <= score) {
@@ -109,9 +109,9 @@ public class WhacAMole {
 
                         resetButton.setEnabled(true);
 
-                        // Stops the movement of the mole and plant
+                        // Stops the movement of the mole and enemy
                         setMoleTimer.stop();
-                        setPlantTimer.stop();
+                        setEnemyTimer.stop();
 
                         // Iterates through each button of the array and disables it
                         for (int i = 0; i < 9; i++) {
@@ -134,8 +134,8 @@ public class WhacAMole {
                 int num = random.nextInt(9); // Gives random number up to 9 (0-8)
                 JButton tile = board[num]; // Select random tile from array
 
-                // If tile is occupied by plant, skip tile for this turn
-                if (currPlantTile == tile) return;
+                // If tile is occupied by enemy, skip tile for this turn
+                if (currEnemyTile == tile) return;
 
                 // Set tile to mole
                 currMoleTile = tile;
@@ -143,12 +143,12 @@ public class WhacAMole {
             }
         });
 
-        setPlantTimer = new Timer(1500, new ActionListener() {
+        setEnemyTimer = new Timer(1500, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Remove plant from current tile
-                if (currPlantTile != null) {
-                    currPlantTile.setIcon(null);
-                    currPlantTile = null;
+                // Remove enemy from current tile
+                if (currEnemyTile != null) {
+                    currEnemyTile.setIcon(null);
+                    currEnemyTile = null;
                 }
 
                 // Randomly select another tile
@@ -158,14 +158,14 @@ public class WhacAMole {
                 // If tile is occupied by mole, skip tile for this turn
                 if (currMoleTile == tile) return;
 
-                // Set tile to plant
-                currPlantTile = tile;
-                currPlantTile.setIcon(plantIcon);
+                // Set tile to enemy
+                currEnemyTile = tile;
+                currEnemyTile.setIcon(enemyIcon);
             }
         });
 
         setMoleTimer.start();
-        setPlantTimer.start();
+        setEnemyTimer.start();
         frame.setVisible(true); // by setting at very end, everything loads before the window is visible
     }
 }
